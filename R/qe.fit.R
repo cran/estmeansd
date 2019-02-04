@@ -8,7 +8,7 @@
 #'
 #' Distributions are fit by minimizing the distance between observed and distribution quantiles in the L2-norm. The limited-memory Broyden-Fletcher-Goldfarb-Shanno (L-BFGS-M) algorithm implemented in the \code{\link[stats]{optim}} function is used for minimization.
 #'
-#' Two different conventions may be used for setting the candidate distributions, parameter starting values, and parameter constraints, which is controlled by the \code{twosample_default} argument. If the convention of McGrath et al. (2018) is used, the candidate distributions are the normal, log-normal, gamma, and Weibull distributions. If the convention of McGrath et al. (in preparation) is used, the beta distribution is also included. In either case, if a negative value is provided (e.g., for the minimum value or the first quartile value), only the normal distribution is fit.
+#' Two different conventions may be used for setting the candidate distributions, parameter starting values, and parameter constraints, which is controlled by the \code{two.sample.default} argument. If the convention of McGrath et al. (2018) is used, the candidate distributions are the normal, log-normal, gamma, and Weibull distributions. If the convention of McGrath et al. (in preparation) is used, the beta distribution is also included. In either case, if a negative value is provided (e.g., for the minimum value or the first quartile value), only the normal distribution is fit.
 #'
 #' @param min.val numeric value giving the sample minimum.
 #' @param q1.val numeric value giving the sample first quartile.
@@ -16,7 +16,7 @@
 #' @param q3.val numeric value giving the sample third quartile.
 #' @param max.val numeric value giving the sample maximum.
 #' @param n numeric value giving the sample size.
-#' @param twosample_default logical scalar. If set to \code{TRUE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (2018). If set to \code{FALSE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (in preparation). The default is \code{FALSE}.
+#' @param two.sample.default logical scalar. If set to \code{TRUE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (2018). If set to \code{FALSE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (in preparation). The default is \code{FALSE}.
 #' @param qe.fit.control optional list of control parameters for the minimization algorithm.
 #' \tabular{ll}{
 #' \code{norm.mu.start} \tab numeric value giving the starting value for the \eqn{\mu} parameter of the normal distribution. \cr
@@ -65,10 +65,9 @@
 #' @export
 
 qe.fit <- function(min.val, q1.val, med.val, q3.val, max.val, n,
-                   twosample_default = FALSE, qe.fit.control = list()) {
+                   two.sample.default = FALSE, qe.fit.control = list()) {
 
-  scenario <- metamedian::get.scenario(min.val, q1.val, med.val, q3.val,
-                                       max.val)
+  scenario <- get.scenario(min.val, q1.val, med.val, q3.val, max.val)
   if (missing(n) & (scenario %in% c("S1", "S3"))) {
     stop("Need to specify n in S1 or S3")
   }
@@ -88,7 +87,7 @@ qe.fit <- function(min.val, q1.val, med.val, q3.val, max.val, n,
     quants[quants == 0] <- 10^(-2)
   }
 
-  con <-  set.qe.fit.control(quants, n, scenario, twosample_default)
+  con <-  set.qe.fit.control(quants, n, scenario, two.sample.default)
   con[names(qe.fit.control)] <- qe.fit.control
 
   S.theta.norm <- function(theta) {
@@ -155,7 +154,7 @@ qe.fit <- function(min.val, q1.val, med.val, q3.val, max.val, n,
     },
     error = no.fit
     )
-    if (twosample_default){
+    if (two.sample.default){
       fit.beta <- no.fit(1)
     } else {
       fit.beta <- tryCatch({

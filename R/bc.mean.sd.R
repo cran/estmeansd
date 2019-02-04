@@ -52,8 +52,7 @@
 bc.mean.sd <- function(min.val, q1.val, med.val, q3.val, max.val, n,
                        preserve.tail = FALSE, avoid.mc = FALSE) {
 
-  scenario <- metamedian::get.scenario(min.val, q1.val, med.val, q3.val,
-                                       max.val)
+  scenario <- get.scenario(min.val, q1.val, med.val, q3.val, max.val)
   if (missing(n)) {
     stop("Need to specify n")
   }
