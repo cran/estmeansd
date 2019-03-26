@@ -28,6 +28,7 @@ A list with the following components:
 \item{est.sd}{Estimated sample standard deviation.}
 \item{selected.dist}{Selected outcome distribution.}
 \item{values}{Values of the objective functions evaluated at the estimated paramters of each candidate distribution.}
+\item{...}{Other elements.}
 }
 \description{
 This function applies the quantile estimation (QE) method to estimate the sample mean and standard deviation from a study that presents one of the following sets of summary statistics: \itemize{
@@ -52,4 +53,7 @@ obs.sd <- stats::sd(x)
 qe.mean.sd(q1.val = quants[1], med.val = quants[2], q3.val = quants[3],
     n = n)
 
+}
+\references{
+McGrath S., Zhao X., Steele R., Thombs B.D., Benedetti A., and the DEPRESsion Screening Data (DEPRESSD) Collaboration. (2019). Estimating the sample mean and standard deviation from commonly reported quantiles in meta-analysis. \emph{ArXiv e-prints}. \url{https://arxiv.org/abs/1903.10498}.
 }

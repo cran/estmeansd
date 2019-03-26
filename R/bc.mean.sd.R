@@ -34,7 +34,7 @@
 #' @examples
 #' ## Generate S2 summary data
 #' set.seed(1)
-#' n <- 1000
+#' n <- 100
 #' x <- stats::rlnorm(n, 2.5, 1)
 #' quants <- stats::quantile(x, probs = c(0.25, 0.5, 0.75))
 #' obs.mean <- mean(x)
@@ -44,6 +44,7 @@
 #' bc.mean.sd(q1.val = quants[1], med.val = quants[2], q3.val = quants[3],
 #'     n = n)
 #'
+#' @references McGrath S., Zhao X., Steele R., Thombs B.D., Benedetti A., and the DEPRESsion Screening Data (DEPRESSD) Collaboration. (2019). Estimating the sample mean and standard deviation from commonly reported quantiles in meta-analysis. \emph{ArXiv e-prints}. \url{https://arxiv.org/abs/1903.10498}.
 #' @references Box G.E.P., and D.R. Cox. (1964). An analysis of transformations. \emph{Journal of the Royal Statistical Society Series B}. \strong{26}(2):211-52.
 #' @references Luo D., Wan X., Liu J., and Tong T. (2016). Optimally estimating the sample mean from the sample size, median, mid-range, and/or mid-quartile range. \emph{Statistical Methods in Medical Research}. \strong{27}(6):1785-805
 #' @references Wan X., Wang W., Liu J., and Tong T. (2014). Estimating the sample mean and standard deviation from the sample size, median, range and/or interquartile range. \emph{BMC Medical Research Methodology}. \strong{14}:135.
@@ -55,6 +56,9 @@ bc.mean.sd <- function(min.val, q1.val, med.val, q3.val, max.val, n,
   scenario <- get.scenario(min.val, q1.val, med.val, q3.val, max.val)
   if (missing(n)) {
     stop("Need to specify n")
+  }
+  if (is.na(n) | n < 3 | n > 1e6){
+    stop("Value of n must be between 3 and 1,000,000")
   }
 
   location.scale.shape <- get.location.scale.shape(min.val, q1.val, med.val,

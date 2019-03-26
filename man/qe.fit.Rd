@@ -20,10 +20,9 @@ qe.fit(min.val, q1.val, med.val, q3.val, max.val, n,
 
 \item{n}{numeric value giving the sample size.}
 
-\item{two.sample.default}{logical scalar. If set to \code{TRUE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (2018). If set to \code{FALSE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (in preparation). The default is \code{FALSE}.}
+\item{two.sample.default}{logical scalar. If set to \code{TRUE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (2018). If set to \code{FALSE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (2019). The default is \code{FALSE}.}
 
-\item{qe.fit.control}{optional list of control parameters for the minimization algorithm.
-\tabular{ll}{
+\item{qe.fit.control}{optional list of control parameters for the minimization algorithm. \tabular{ll}{
 \code{norm.mu.start} \tab numeric value giving the starting value for the \eqn{\mu} parameter of the normal distribution. \cr
 \code{norm.sigma.start} \tab numeric value giving the starting value for the \eqn{\sigma} parameter of the normal distribution. \cr
 \code{lnorm.mu.start} \tab numeric value giving the starting value for the \eqn{\mu} parameter of the log-normal distribution. \cr
@@ -53,8 +52,9 @@ A object of class \code{qe.fit}. The object is a list with the following compone
 \item{weibull.par}{Estimated parameters of the Weibull distribution.}
 \item{beta.par}{Estimated parameters of the beta distribution.}
 \item{values}{Values of the objective functions evaluated at the estimated paramters of each candidate distribution.}
+\item{...}{Other elements.}
 
-The results are printed with the \code{\link{print.qe.fit}} function.
+The results are printed with the \code{\link{print.qe.fit}} function. The results can be visualized by using the \code{\link{plot.qe.fit}} function.
 }
 \description{
 This function fits several parametric families of distributions from summary data in the following forms: \itemize{
@@ -66,7 +66,7 @@ This function fits several parametric families of distributions from summary dat
 \details{
 Distributions are fit by minimizing the distance between observed and distribution quantiles in the L2-norm. The limited-memory Broyden-Fletcher-Goldfarb-Shanno (L-BFGS-M) algorithm implemented in the \code{\link[stats]{optim}} function is used for minimization.
 
-Two different conventions may be used for setting the candidate distributions, parameter starting values, and parameter constraints, which is controlled by the \code{two.sample.default} argument. If the convention of McGrath et al. (2018) is used, the candidate distributions are the normal, log-normal, gamma, and Weibull distributions. If the convention of McGrath et al. (in preparation) is used, the beta distribution is also included. In either case, if a negative value is provided (e.g., for the minimum value or the first quartile value), only the normal distribution is fit.
+Two different conventions may be used for setting the candidate distributions, parameter starting values, and parameter constraints, which is controlled by the \code{two.sample.default} argument. If the convention of McGrath et al. (2018) is used, the candidate distributions are the normal, log-normal, gamma, and Weibull distributions. If the convention of McGrath et al. (2019) is used, the beta distribution is also included. In either case, if a negative value is provided (e.g., for the minimum value or the first quartile value), only the normal distribution is fit.
 }
 \examples{
 ## Generate S2 summary data
@@ -81,4 +81,6 @@ qe.fit(q1.val = quants[1], med.val = quants[2], q3.val = quants[3], n = n)
 }
 \references{
 McGrath S., Sohn H., Steele R., and Benedetti A. (2018). Two-sample aggregate data meta-analysis of medians. \emph{ArXiv e-prints}. \url{https://arxiv.org/abs/1809.01278}.
+
+McGrath S., Zhao X., Steele R., Thombs B.D., Benedetti A., and the DEPRESsion Screening Data (DEPRESSD) Collaboration. (2019). Estimating the sample mean and standard deviation from commonly reported quantiles in meta-analysis. \emph{ArXiv e-prints}. \url{https://arxiv.org/abs/1903.10498}.
 }

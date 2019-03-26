@@ -80,7 +80,8 @@ set.qe.fit.control <- function(quants, n, scenario, twosample_default){
     con$gamma.shape.start <- mean.hat^2/sd.hat^2
     con$gamma.rate.start <- mean.hat/sd.hat^2
 
-    con$beta.shape1.start <- mean.hat * (((mean.hat * (1 - mean.hat)) / (sd.hat^2)) - 1)
+    con$beta.shape1.start <- mean.hat *
+      (((mean.hat * (1 - mean.hat)) / (sd.hat^2)) - 1)
     con$beta.shape2.start <- con$beta.shape1.start * (1 - mean.hat) / mean.hat
 
     start.val <- (mean.hat/sd.hat)^1.086
@@ -116,4 +117,33 @@ set.qe.fit.control <- function(quants, n, scenario, twosample_default){
     con$beta.shape2.bounds <- c(10^(-3), 40)
   }
   return(con)
+}
+
+get.num.input <- function(min.val, q1.val, med.val, q3.val, max.val, n){
+  res <- list()
+  if (!missing(min.val)){
+    res$min.val <- min.val
+  }
+  if (!missing(q1.val)){
+    res$q1.val <- q1.val
+  }
+  if (!missing(med.val)){
+    res$med.val <- med.val
+  }
+  if (!missing(q3.val)){
+    res$q3.val <- q3.val
+  }
+  if (!missing(max.val)){
+    res$max.val <- max.val
+  }
+  if (!missing(n)){
+    res$n <- n
+  }
+  return(res)
+}
+
+simpleCap <- function(x) {
+  s <- strsplit(x, " ")[[1]]
+  paste(toupper(substring(s, 1, 1)), substring(s, 2),
+        sep="", collapse=" ")
 }

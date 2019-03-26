@@ -8,7 +8,7 @@
 #'
 #' Distributions are fit by minimizing the distance between observed and distribution quantiles in the L2-norm. The limited-memory Broyden-Fletcher-Goldfarb-Shanno (L-BFGS-M) algorithm implemented in the \code{\link[stats]{optim}} function is used for minimization.
 #'
-#' Two different conventions may be used for setting the candidate distributions, parameter starting values, and parameter constraints, which is controlled by the \code{two.sample.default} argument. If the convention of McGrath et al. (2018) is used, the candidate distributions are the normal, log-normal, gamma, and Weibull distributions. If the convention of McGrath et al. (in preparation) is used, the beta distribution is also included. In either case, if a negative value is provided (e.g., for the minimum value or the first quartile value), only the normal distribution is fit.
+#' Two different conventions may be used for setting the candidate distributions, parameter starting values, and parameter constraints, which is controlled by the \code{two.sample.default} argument. If the convention of McGrath et al. (2018) is used, the candidate distributions are the normal, log-normal, gamma, and Weibull distributions. If the convention of McGrath et al. (2019) is used, the beta distribution is also included. In either case, if a negative value is provided (e.g., for the minimum value or the first quartile value), only the normal distribution is fit.
 #'
 #' @param min.val numeric value giving the sample minimum.
 #' @param q1.val numeric value giving the sample first quartile.
@@ -16,9 +16,8 @@
 #' @param q3.val numeric value giving the sample third quartile.
 #' @param max.val numeric value giving the sample maximum.
 #' @param n numeric value giving the sample size.
-#' @param two.sample.default logical scalar. If set to \code{TRUE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (2018). If set to \code{FALSE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (in preparation). The default is \code{FALSE}.
-#' @param qe.fit.control optional list of control parameters for the minimization algorithm.
-#' \tabular{ll}{
+#' @param two.sample.default logical scalar. If set to \code{TRUE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (2018). If set to \code{FALSE}, the candidate distributions, initial values, and box constraints are set to that of McGrath et al. (2019). The default is \code{FALSE}.
+#' @param qe.fit.control optional list of control parameters for the minimization algorithm. \tabular{ll}{
 #' \code{norm.mu.start} \tab numeric value giving the starting value for the \eqn{\mu} parameter of the normal distribution. \cr
 #' \code{norm.sigma.start} \tab numeric value giving the starting value for the \eqn{\sigma} parameter of the normal distribution. \cr
 #' \code{lnorm.mu.start} \tab numeric value giving the starting value for the \eqn{\mu} parameter of the log-normal distribution. \cr
@@ -47,10 +46,12 @@
 #' \item{weibull.par}{Estimated parameters of the Weibull distribution.}
 #' \item{beta.par}{Estimated parameters of the beta distribution.}
 #' \item{values}{Values of the objective functions evaluated at the estimated paramters of each candidate distribution.}
+#' \item{...}{Other elements.}
 #'
-#' The results are printed with the \code{\link{print.qe.fit}} function.
+#' The results are printed with the \code{\link{print.qe.fit}} function. The results can be visualized by using the \code{\link{plot.qe.fit}} function.
 #'
 #' @references McGrath S., Sohn H., Steele R., and Benedetti A. (2018). Two-sample aggregate data meta-analysis of medians. \emph{ArXiv e-prints}. \url{https://arxiv.org/abs/1809.01278}.
+#' @references McGrath S., Zhao X., Steele R., Thombs B.D., Benedetti A., and the DEPRESsion Screening Data (DEPRESSD) Collaboration. (2019). Estimating the sample mean and standard deviation from commonly reported quantiles in meta-analysis. \emph{ArXiv e-prints}. \url{https://arxiv.org/abs/1903.10498}.
 #'
 #' @examples
 #' ## Generate S2 summary data
@@ -68,8 +69,11 @@ qe.fit <- function(min.val, q1.val, med.val, q3.val, max.val, n,
                    two.sample.default = FALSE, qe.fit.control = list()) {
 
   scenario <- get.scenario(min.val, q1.val, med.val, q3.val, max.val)
-  if (missing(n) & (scenario %in% c("S1", "S3"))) {
-    stop("Need to specify n in S1 or S3")
+  if (missing(n)) {
+    stop("Need to specify n")
+  }
+  if (is.na(n) | n < 3 | n > 1e6){
+    stop("Value of n must be between 3 and 1,000,000")
   }
 
   if (scenario == "S1") {
@@ -195,9 +199,11 @@ qe.fit <- function(min.val, q1.val, med.val, q3.val, max.val, n,
     names(beta.par) <- c("shape1", "shape2")
   }
 
+  num.input <- get.num.input(min.val, q1.val, med.val, q3.val, max.val, n)
   output <- list(norm.par = norm.par, lnorm.par = lnorm.par,
                  gamma.par = gamma.par, weibull.par = weibull.par,
-                 beta.par = beta.par, values = values)
+                 beta.par = beta.par, values = values,
+                 num.input = num.input)
   class(output) <- "qe.fit"
   return(output)
 }
