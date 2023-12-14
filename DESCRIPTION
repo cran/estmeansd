@@ -2,7 +2,7 @@ Package: estmeansd
 Type: Package
 Title: Estimating the Sample Mean and Standard Deviation from Commonly
         Reported Quantiles in Meta-Analysis
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(person("Sean", "McGrath", role = c("aut", "cre"), 
                      email = "sean.mcgrath@mail.mcgill.ca",
                      comment = c(ORCID = "0000-0002-7281-3516")),
@@ -20,18 +20,19 @@ Description: Implements the methods of McGrath et al. (2020)
     deviation from commonly reported quantiles in meta-analysis. These methods 
     can be applied to studies that report the sample median, sample size, and 
     one or both of (i) the sample minimum and maximum values and (ii) the first 
-    and third quartiles. 
+    and third quartiles. The corresponding standard error estimators described 
+    by McGrath et al. (2023) <doi:10.1177/09622802221139233> are also included.
 Imports: graphics, grDevices, metaBLUE, stats
 License: GPL (>= 3)
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 URL: https://github.com/stmcg/estmeansd
 BugReports: https://github.com/stmcg/estmeansd/issues
 NeedsCompilation: no
-Packaged: 2022-06-17 18:39:27 UTC; Sean
+Packaged: 2023-12-14 01:42:43 UTC; Sean
 Author: Sean McGrath [aut, cre] (<https://orcid.org/0000-0002-7281-3516>),
   XiaoFei Zhao [aut],
   Russell Steele [aut],
   Andrea Benedetti [aut] (<https://orcid.org/0000-0002-8314-9497>)
 Repository: CRAN
-Date/Publication: 2022-06-19 00:00:07 UTC
+Date/Publication: 2023-12-14 06:00:02 UTC

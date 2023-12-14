@@ -1,5 +1,10 @@
 ## Package Updates
 
+### Changes in Version 1.0.1 (2023-12-13)
+
+-   Removed Travis CI
+-   Updated documentation
+
 ### Changes in Version 1.0.0 (2022-06-17)
 
 -   Added the `mln.mean.sd()` function, which implements the Method for
